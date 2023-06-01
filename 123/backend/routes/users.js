@@ -6,11 +6,7 @@ let User = require('../models/user.model');
 
 router.post('/add', userController.add);
 router.post('/login', userController.login);
-// router.route('/').get((req, res) => {
-//   User.find()
-//     .then(users => res.json(users))
-//     .catch(err => res.status(400).json('Error: ' + err));
-// });
+router.get('/findByid', userController.get);
 
 // router.route('/login').post = async ((req, res) => {
 //   const email = req.body.email;

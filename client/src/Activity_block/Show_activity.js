@@ -16,7 +16,7 @@ import axios from 'axios';
 // }
 
 
-const get_act_info =  async (num, type,filter) =>{
+const get_act_info =  async (num, type, filter) =>{
     //向後端拿資料
     // const activityInfo = {
     //     hostname : "Allen" ,

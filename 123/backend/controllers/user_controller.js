@@ -54,3 +54,16 @@ exports.add = async(req, res) => {
     .then(() => res.json('200'))
     .catch(err => res.json('400'));
 };
+
+exports.get = async(req, res) => {
+  const id = req.query._id;
+  const user = await User.find({_id : id});
+  if(!user)
+  {
+    return res.json("Incorrect_email");
+  }
+  else
+  {
+    return res.json(user);
+  }
+}
