@@ -5,15 +5,15 @@ let User = require('../models/user.model');
 
 
 exports.login = async (req, res) => {
-  const email = req.body.email;
+  const req_email = req.body.email;
   const password = req.body.password;
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email: req_email }).select('+password');
   
   if (!user){
     return res.json({status: "Incorrect_email", user_id: 0});
   }
-  console.log(user.password);
-  console.log(password);
+  // console.log(user.password);
+  // console.log(password);
   const correct = password === user.password;
   if(!correct){
     return res.json({status: "Incorrect_password", user_id: 0});
