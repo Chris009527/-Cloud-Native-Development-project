@@ -10,16 +10,16 @@ exports.login = async (req, res) => {
   const user = await User.findOne({ email }).select('+password');
   
   if (!user){
-    return res.json("Incorrect_email");
+    return res.json({status: "Incorrect_email", user_id: 0});
   }
   console.log(user.password);
   console.log(password);
   const correct = password === user.password;
   if(!correct){
-    return res.json("Incorrect_password");
+    return res.json({status: "Incorrect_password", user_id: 0});
   }
   else{
-    return res.json('login_success');
+    return res.json({status: 'login_success', user_id: user._id});
   }
 //   bcrypt.compare(password, user.password, (err, data) => {
 //     //if error than throw error

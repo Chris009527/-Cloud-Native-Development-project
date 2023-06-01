@@ -73,16 +73,16 @@ export default class UserLogin extends Component {
             // res.json(res.data).then(data => {const errorMessage = data.error;
             //     console.log(errorMessage);
             // });
-            console.log(res.data);
-            if(res.data === "login_success")
+            console.log(res.data.status);
+            if(res.data.status === "login_success")
             {
                 alert("login success!");
-                window.location = '/home';
+                window.location = `http://localhost:3456/?user_id=${res.data.user_id}`;
             }
-            else if (res.data === "Incorrect_email"){
+            else if (res.data.status === "Incorrect_email"){
                 alert("login failed! Incorrect email");
             }
-            else if (res.data === "Incorrect_password"){
+            else if (res.data.status === "Incorrect_password"){
                 alert("login failed! Incorrect password");
             }
         });
