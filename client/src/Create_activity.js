@@ -39,10 +39,12 @@ function Create_activity(props) {
         console.log(data);
         axios.post('http://localhost:5001/'+formData.actType+'/add', data)
           .then(res => console.log(res.data))
-          .catch(err => console.log("Error: "+err));
-        axios.post('http://localhost:5002/participate/update', {userid:props.userInfo._id, actname:formData.actType + ":" + formData.title})
-          .then(res => console.log(res.data))
-          .catch(err => console.log("Error: "+err));
+          .then(() => {
+            axios.post('http://localhost:5002/participate/update', {userid:props.userInfo._id, actname:formData.actType + ":" + formData.title})
+            .then(res => console.log(res.data));
+          })
+          .catch(err => alert(err.response.data.error));
+
         handleClose();
     };
 

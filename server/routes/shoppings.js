@@ -7,7 +7,7 @@ router.route('/').get((req, res) => {
     .then((sport) => {
         res.json(sport);
     })
-    .catch(err => res.status(400).json('Error: '+err));
+    .catch(err => res.status(400).json({error:'Error: '}));
 });
 
 router.route('/add').post((req, res) => {
@@ -31,7 +31,10 @@ router.route('/add').post((req, res) => {
   
     newshopping.save()
       .then(() => res.json('shoppings added!'))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error:
+        'Error: Please make sure\n'+
+        '    1) all required information had been filled\n'+
+        '    2) title of activity is unique.' }));
   });
   router.route('/findByName').post((req, res) => {
     const title = req.body.title;
@@ -39,7 +42,7 @@ router.route('/add').post((req, res) => {
     .then((shopping) => {
         res.json(shopping);
     })
-    .catch(err => res.status(400).json('Error: '+err));
+    .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 });
 
 router.route('/check_participate').post((req, res) => {
@@ -50,9 +53,9 @@ router.route('/check_participate').post((req, res) => {
         {
             res.json(shopping);
         }
-        else res.status(400).json('Error: '+err);
+        else res.status(400).json({error:'Error: exceed max headcount.'});
     })
-    .catch(err => res.status(400).json('Error: '+err));
+    .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 })
 
 router.route('/participate').post((req, res) => {
@@ -64,7 +67,7 @@ router.route('/participate').post((req, res) => {
         shopping.save();
         res.json(shopping);
     })
-    .catch(err => res.status(400).json('Error: '+err));
+    .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 })
 
 router.route('/withdraw').post((req, res) => {
@@ -76,7 +79,7 @@ router.route('/withdraw').post((req, res) => {
         shopping.save();
         res.json(shopping);
     })
-    .catch(err => res.status(400).json('Error: '+err));
+    .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 })
 
 module.exports = router;

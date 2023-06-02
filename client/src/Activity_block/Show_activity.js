@@ -25,8 +25,9 @@ const get_act_info =  async (num, type, filter) =>{
         
     }catch(error)
     {
-        console.error(error);
+        alert(error.response.data.error);
     }
+    return [];
 }
 
 
@@ -52,7 +53,6 @@ function Show_activity(props){
             }
             setList(newlist);
         })
-        .catch(err =>{console.log(err)});
     })
     
     

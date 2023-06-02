@@ -16,7 +16,7 @@ const join_activity = async (userid, activity, type) => {
     }
     catch(error)
     {
-        console.error(error);
+        alert(error.response.data.error);
     }
 }
 

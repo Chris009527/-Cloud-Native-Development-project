@@ -7,7 +7,7 @@ router.route('/').get((req, res) => {
     .then((car) => {
         res.json(car);
     })
-    .catch(err => res.status(400).json('Error: '+err));
+    .catch(err => res.status(400).json({error:'Error: '}));
 });
 
 router.route('/add').post((req, res) => {
@@ -31,7 +31,10 @@ router.route('/add').post((req, res) => {
   
     newcar.save()
       .then(() => res.json('car added!'))
-      .catch(err => res.status(400).json('Error: ' + err));
+      .catch(err => res.status(400).json({error:
+        'Error: Please make sure\n'+
+        '    1) all required information had been filled\n'+
+        '    2) title of activity is unique.' }));
   });
 
   router.route('/findByName').post((req, res) => {
@@ -40,7 +43,7 @@ router.route('/add').post((req, res) => {
     .then((car) => {
         res.json(car);
     })
-    .catch(err => res.status(400).json('Error: '+err));
+    .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 });
 
 router.route('/check_participate').post((req, res) => {
@@ -51,9 +54,9 @@ router.route('/check_participate').post((req, res) => {
         {
             res.json(car);
         }
-        else res.status(400).json('Error: '+err);
+        else res.status(400).json({error:'Error: exceed max headcount.'});
     })
-    .catch(err => res.status(400).json('Error: '+err));
+    .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 })
 
 router.route('/participate').post((req, res) => {
@@ -65,7 +68,7 @@ router.route('/participate').post((req, res) => {
         car.save();
         res.json(car);
     })
-    .catch(err => res.status(400).json('Error: '+err));
+    .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 })
 
 router.route('/withdraw').post((req, res) => {
@@ -77,7 +80,7 @@ router.route('/withdraw').post((req, res) => {
         car.save();
         res.json(car);
     })
-    .catch(err => res.status(400).json('Error: '+err));
+    .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 })
 
 module.exports = router;

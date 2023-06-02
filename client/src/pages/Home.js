@@ -22,7 +22,7 @@ const getUserInfo = async() => {
         
     }catch(error)
     {
-        console.error(error);
+        alert(error.response.data.error);
     }
     
 }

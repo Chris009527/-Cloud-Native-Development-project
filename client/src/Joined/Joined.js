@@ -34,7 +34,7 @@ const get_Joined_event = async (showall, userid) => {
                 return tempList;
             }catch(error)
             {
-                console.error(error);
+                alert(error.response.data.error);
             }
             
         }
@@ -45,7 +45,7 @@ const get_Joined_event = async (showall, userid) => {
  
     }catch(error)
     {
-        console.error(error);
+        alert(error.response.data.error);
     }
     return [];
 }
