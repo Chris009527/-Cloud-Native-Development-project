@@ -1,5 +1,22 @@
 import React, {useState} from "react";
 import { Button, Modal, Row, Col, ModalHeader, ModalTitle, ModalBody } from "react-bootstrap";
+import axios from 'axios'
+
+const withdraw_activity = async (userid, acttitle) => {
+    try
+    {
+        const participate = {
+            userid : userid,
+            actname : acttitle
+        }
+        const response = await axios.post("http://localhost:5002/participate/withdraw", participate);
+        console.log(response.data);
+    }
+    catch(error)
+    {
+        console.error(error);
+    }
+}
 
 function Joined_event(props)
 {
@@ -17,6 +34,7 @@ function Joined_event(props)
 
     const handlewithdraw = () => {
         //將個資傳到後端取消活動
+        withdraw_activity(props.userid, props.info.title);
         setShowModal(false);
     }
     return (

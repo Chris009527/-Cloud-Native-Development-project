@@ -1,6 +1,22 @@
 import React,{useState} from "react"
 import { Button, Modal, Container, Row, Col, ModalHeader, ModalTitle, ModalBody } from "react-bootstrap"
+import axios from 'axios'
 
+const join_activity = async (userid, acttitle) => {
+    try
+    {
+        const participate = {
+            userid : userid,
+            actname : acttitle
+        }
+        const response = await axios.post("http://localhost:5002/participate/update", participate);
+        console.log(response.data);
+    }
+    catch(error)
+    {
+        console.error(error);
+    }
+}
 
 function Activity_Block(props){
     const [showModal, setShowModal] = useState(false);
@@ -16,11 +32,10 @@ function Activity_Block(props){
         setShowModal(false);
     }
 
-    const handleAdd = () => {
-        //將個資傳到後端加入活動
+    const handleAdd = () => {       
+        join_activity(props.userid, props.info.title);
         setShowModal(false);
     }
-
     return (
         <div >
             <Container>

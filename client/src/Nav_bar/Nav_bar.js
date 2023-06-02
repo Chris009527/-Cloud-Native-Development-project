@@ -1,44 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import React from "react";
+import { Link } from 'react-router-dom';
 import { Button } from "react-bootstrap";
-import axios from 'axios';
-        
 
 
-const getUserInfo = async() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const user_id = urlParams.get('user_id');
 
-    try {
-        const response =  await axios.get('http://localhost:5000/users/findByid', {
-            params:{
-                _id : user_id
-            }
-        });
-        const data = response.data;
-        console.log(data);
-        return data;
-        
-    }catch(error)
-    {
-        console.error(error);
-    }
-    
-  }
-
-function Nav_bar() {
-    const [userid, setuserid] = useState("");
-    const [username, setusername] = useState("");
-    useEffect(() => {
-        getUserInfo()
-        .then(res => {
-            
-            setuserid(res._id);
-            setusername(res.username);
-
-        })
-        
-    })
+function Nav_bar(props) {
+    const userid = props.userInfo._id;
+    const username = props.userInfo.username;
 
     return (
         <nav className="navbar navbar-expand-md navbar-dark mb-4" style={{backgroundColor:'#3097D1',}}>

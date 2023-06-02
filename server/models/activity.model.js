@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const activitySchema = new Schema(
     {
-        title:{type: String, required: true},
+        title:{type: String, required: true, unique: true},
         hostid:{type: String, required: true},
         from:{type: Date, required: true},
         to:{type: Date, required: true},

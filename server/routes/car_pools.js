@@ -4,14 +4,14 @@ let activity = require('../models/activity.model');
 
 router.route('/').get((req, res) => {
     activity.car_pools.find()
-    .then((sport) => {
-        res.json(sport);
+    .then((car) => {
+        res.json(car);
     })
     .catch(err => res.status(400).json('Error: '+err));
 });
 
 router.route('/add').post((req, res) => {
-    const title = req.body.title;
+    const title = 'car_pools:'+req.body.title;
     const hostid = req.body.hostid;
     const from = Date.parse(req.body.from);
     const to = Date.parse(req.body.to);
@@ -33,5 +33,14 @@ router.route('/add').post((req, res) => {
       .then(() => res.json('car added!'))
       .catch(err => res.status(400).json('Error: ' + err));
   });
+
+  router.route('/findByName').post((req, res) => {
+    const title = req.body.title;
+    activity.car_pools.findOne({title:title})
+    .then((car) => {
+        res.json(car);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+});
 
 module.exports = router;

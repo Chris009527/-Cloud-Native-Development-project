@@ -10,9 +10,9 @@ router.route('/').get((req, res) => {
 
 router.route('/add').post((req, res) => {
   const userid = req.body.userid;
-  const actid = [];
+  const actname = [];
 
-  const newParticipate = new Participate({userid, actid});
+  const newParticipate = new Participate({userid, actname});
 
   newParticipate.save()
     .then(() => res.json('new Participate added!'))
@@ -20,5 +20,6 @@ router.route('/add').post((req, res) => {
 });
 
 router.post('/update', ParticipateController.update);
-
+router.post('/withdraw', ParticipateController.withdraw);
+router.post('/findByUser', ParticipateController.findByUser);
 module.exports = router;

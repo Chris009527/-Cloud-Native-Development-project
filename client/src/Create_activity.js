@@ -4,7 +4,7 @@ import axios from 'axios'
 
 
 
-function Create_activity() {
+function Create_activity(props) {
     const [show, setShow] = useState(false);
   
     const handleClose = () => setShow(false);
@@ -15,7 +15,7 @@ function Create_activity() {
         title : '',
         from:'',
         to:'',
-        actType:'',
+        actType:'travels',
         headcount : 0,
         introduction:''
       }
@@ -40,7 +40,9 @@ function Create_activity() {
         axios.post('http://localhost:5001/'+formData.actType+'/add', data)
           .then(res => console.log(res.data))
           .catch(err => console.log("Error: "+err));
-
+        axios.post('http://localhost:5002/participate/update', {userid:props.userInfo._id, actname:formData.actType + ":" + formData.title})
+          .then(res => console.log(res.data))
+          .catch(err => console.log("Error: "+err));
         handleClose();
     };
 
@@ -71,7 +73,7 @@ function Create_activity() {
 
                 <Form.Label>Type</Form.Label>
                 <Form.Select name='actType' value={formData.actType} onChange={handleFormData}>
-                  <option value='travels'>Travel</option>
+                  <option selected value='travels' >Travel</option>
                   <option value='sports'>Sports</option>
                   <option value='car_pools'>Car pool</option>
                   <option value='shoppings'>Shopping</option>

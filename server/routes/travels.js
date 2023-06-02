@@ -11,7 +11,7 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-    const title = req.body.title;
+    const title = 'travels:'+req.body.title;
     const hostid = req.body.hostid;
     const from = Date.parse(req.body.from);
     const to = Date.parse(req.body.to);
@@ -33,5 +33,13 @@ router.route('/add').post((req, res) => {
       .then(() => res.json('travel added!'))
       .catch(err => res.status(400).json('Error: ' + err));
   });
+  router.route('/findByName').post((req, res) => {
+    const title = req.body.title;
+    activity.travels.findOne({title:title})
+    .then((travel) => {
+        res.json(travel);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+});
 
 module.exports = router;

@@ -1,50 +1,78 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Button} from "react-bootstrap";
 import Joined_event from "./event_block";
+import axios from 'axios';
 
 
-function get_Joined_event(showall) {
+const get_Joined_event = async (showall, userid) => {
     //拿資料
-    const activityInfo = {
-        hostname : "Allen" ,
-        hostid : "PIYANKiller000",
-        title : "PIYANParty",
-        id : "PIYANParty000",
-        headcount : 10,
-        introduction : "This is a fun activity.",
-        from : "2023-5-24 23:00:00",
-        to : "2023-5-25 00:00:00",
+    const user = {
+        userid : userid,
+        actname : []
     }
-    let list = [];
-    if (showall)
-    {
-        for(let i = 0; i < 10; i++)
-        {
-            list.push(<Joined_event info={activityInfo} />);
+    try {
+        const response = await axios.post('http://localhost:5002/participate/findByUser',user)
+
+        const further = async () => {
+            const tempList = []
+            const data = response.data;
+            try{
+                for(let i = 0; i < data.length; i++)
+                {
+                    const type = data[i].substring(0, data[i].indexOf(":"));
+                    const act = {
+                        title : data[i]
+                    }
+                    const res = await axios.post('http://localhost:5001/'+type+'/findByName', act);
+                    tempList.push(res.data);
+                                    
+                }
+
+                return tempList;
+            }catch(error)
+            {
+                console.error(error);
+            }
+            
         }
-    }
-    else
+        const response2 = await further();
+        
+        return response2;
+        //return data.slice(0, num);
+ 
+    }catch(error)
     {
-        for(let i = 0; i < 2; i++)
-        {
-            list.push(<Joined_event info={activityInfo} />);
-        }
+        console.error(error);
     }
-    
-    return list;
+    return [];
 }
 
-function Joined_event_block() {
+function Joined_event_block(props) {
     const [showmore, setshowmore] = useState(false);
     const [buttontext, setbuttontext] = useState('more...')
+    const [list, setList] = useState([]);
 
     const handlemore = () => {
         setshowmore(!showmore);
-        if (buttontext == 'more...')
+        if (buttontext === 'more...')
         setbuttontext('less...');
         else setbuttontext('more...');
     }
-    let list = get_Joined_event(showmore);
+    useEffect(() => {
+
+        get_Joined_event(showmore, props.userInfo._id)
+        .then(result => {
+            let newlist = [];
+            let i = 0;
+            while(i < result.length)
+            {
+                newlist.push(<Joined_event info={result[i]} userid={props.userInfo._id}/>);
+                i++;
+            }
+            setList(newlist);
+
+        })
+    }) 
 
     return (
         <div>

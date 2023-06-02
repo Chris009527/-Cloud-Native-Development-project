@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const participateSchema = new Schema({
   userid:{type:String, require: true},
-  actid:[{type:String, require: true}]
+  actname:[{type:String, require: true}]
 });
 
 const Participate = mongoose.model('participate', participateSchema);

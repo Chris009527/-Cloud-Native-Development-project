@@ -17,17 +17,6 @@ import axios from 'axios';
 
 
 const get_act_info =  async (num, type, filter) =>{
-    //向後端拿資料
-    // const activityInfo = {
-    //     hostname : "Allen" ,
-    //     hostid : "PIYANKiller000",
-    //     title : "PIYANParty",
-    //     id : "PIYANParty000",
-    //     headcount : 10,
-    //     introduction : "This is a fun activity.",
-    //     from : "2023-5-24 23:00:00",
-    //     to : "2023-5-25 00:00:00",
-    // }
     try {
         const response =  await axios.get('http://localhost:5001/'+type+"/");
         const data = response.data;
@@ -50,7 +39,6 @@ function Show_activity(props){
     const updatefilter = (f) => {
         setfilter(f);
     }
-    console.log(props)
 
     useEffect(() => {
         get_act_info(numToShow, props.type, filter)
@@ -59,7 +47,7 @@ function Show_activity(props){
             let i = 0;
             while(i < result.length)
             {
-                newlist.push(<Activity_Block info = {result[i]} />);
+                newlist.push(<Activity_Block info = {result[i]} userid = {props.userInfo._id}/>);
                 i++;
             }
             setList(newlist);
