@@ -53,3 +53,17 @@ exports.add = async(req, res) => {
     .then(() => res.json('200'))
     .catch(err => res.json('400'));
 };
+
+exports.findByid = async(req, res) => {
+  const id = req.query._id;
+  console.log(id)
+  const user = await User.findOne({_id : id});
+  if(!user)
+  {
+    return res.json({status: "Incorrect_id", user_id: id});
+  }
+  else
+  {
+    return res.json(user);
+  }
+}

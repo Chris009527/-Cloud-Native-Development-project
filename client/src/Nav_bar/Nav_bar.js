@@ -32,9 +32,9 @@ function Nav_bar() {
     useEffect(() => {
         getUserInfo()
         .then(res => {
-            console.log(res);
-            setuserid(res[0]._id);
-            setusername(res[0].username);
+            
+            setuserid(res._id);
+            setusername(res.username);
 
         })
         

@@ -6,6 +6,7 @@ let User = require('../models/user.model');
 
 router.post('/add', userController.add);
 router.post('/login', userController.login);
+router.get("/findByid", userController.findByid);
 // router.route('/').get((req, res) => {
 //   User.find()
 //     .then(users => res.json(users))
