@@ -5,6 +5,11 @@ import { Button } from "react-bootstrap";
 
 
 function Nav_bar(props) {
+    
+    if(typeof(props.userInfo._id) === "undefined")
+    {
+        return <div>Loading..</div>;
+    };
     const userid = props.userInfo._id;
     const username = props.userInfo.username;
 

@@ -47,14 +47,13 @@ function Show_activity(props){
             let i = 0;
             while(i < result.length)
             {
-                newlist.push(<Activity_Block info = {result[i]} userid = {props.userInfo._id}/>);
+                newlist.push(<Activity_Block info = {result[i]} userid = {props.userInfo._id} type={props.type}/>);
                 i++;
             }
             setList(newlist);
-            console.log('update');
         })
         .catch(err =>{console.log(err)});
-    }, [filter, numToShow])
+    })
     
     
     

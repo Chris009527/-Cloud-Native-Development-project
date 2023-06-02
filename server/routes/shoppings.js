@@ -42,4 +42,41 @@ router.route('/add').post((req, res) => {
     .catch(err => res.status(400).json('Error: '+err));
 });
 
+router.route('/check_participate').post((req, res) => {
+    const title = req.body.title;
+    activity.shoppings.findOne({title:title})
+    .then((shopping) => {
+        if (shopping.attendence < shopping.headcount)
+        {
+            res.json(shopping);
+        }
+        else res.status(400).json('Error: '+err);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+})
+
+router.route('/participate').post((req, res) => {
+    const title = req.body.title;
+    activity.shoppings.findOne({title:title})
+    .then((shopping) => {
+
+        shopping.attendence += 1;
+        shopping.save();
+        res.json(shopping);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+})
+
+router.route('/withdraw').post((req, res) => {
+    const title = req.body.title;
+    activity.shoppings.findOne({title:title})
+    .then((shopping) => {
+
+        shopping.attendence -= 1;
+        shopping.save();
+        res.json(shopping);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+})
+
 module.exports = router;

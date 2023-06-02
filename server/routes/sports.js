@@ -35,12 +35,48 @@ router.route('/add').post((req, res) => {
   });
   router.route('/findByName').post((req, res) => {
     const title = req.body.title;
-    console.log(title);
     activity.sports.findOne({title:title})
     .then((sport) => {
         res.json(sport);
     })
     .catch(err => res.status(400).json('Error: '+err));
 });
+
+router.route('/check_participate').post((req, res) => {
+    const title = req.body.title;
+    activity.sports.findOne({title:title})
+    .then((sport) => {
+        if (sport.attendence < sport.headcount)
+        {
+            res.json(sport);
+        }
+        else res.status(400).json('Error: '+err);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+})
+
+router.route('/participate').post((req, res) => {
+    const title = req.body.title;
+    activity.sports.findOne({title:title})
+    .then((sport) => {
+
+        sport.attendence += 1;
+        sport.save();
+        res.json(sport);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+})
+
+router.route('/withdraw').post((req, res) => {
+    const title = req.body.title;
+    activity.sports.findOne({title:title})
+    .then((sport) => {
+
+        sport.attendence -= 1;
+        sport.save();
+        res.json(sport);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+})
 
 module.exports = router;

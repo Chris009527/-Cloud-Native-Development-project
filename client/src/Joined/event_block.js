@@ -9,7 +9,11 @@ const withdraw_activity = async (userid, acttitle) => {
             userid : userid,
             actname : acttitle
         }
+
+        const type = acttitle.substring(0, acttitle.indexOf(":"));
+
         const response = await axios.post("http://localhost:5002/participate/withdraw", participate);
+        await axios.post("http://localhost:5001/"+type+"/withdraw", {title:acttitle});
         console.log(response.data);
     }
     catch(error)
@@ -64,7 +68,7 @@ function Joined_event(props)
                             <div>Hoster: {props.info.hostname}</div>
                         </Col>
                         <Col className="d-flex justify-content-end">
-                            <div>Headcount: {props.info.headcount}</div>
+                            <div>Participate: {props.info.attendence}/{props.info.headcount}</div>
                         </Col>
                     </Row>
                     <Row>

@@ -29,7 +29,7 @@ const getUserInfo = async() => {
 }
 
 function Sports() {
-    const[userInfo, setUserInfo] = useState("");
+    const[userInfo, setUserInfo] = useState({});
     useEffect(() => {
         getUserInfo()
         .then(data => {

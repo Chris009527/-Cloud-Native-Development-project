@@ -42,4 +42,41 @@ router.route('/add').post((req, res) => {
     .catch(err => res.status(400).json('Error: '+err));
 });
 
+router.route('/check_participate').post((req, res) => {
+    const title = req.body.title;
+    activity.travels.findOne({title:title})
+    .then((travel) => {
+        if (travel.attendence < travel.headcount)
+        {
+            res.json(travel);
+        }
+        else res.status(400).json('Error: '+err);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+})
+
+router.route('/participate').post((req, res) => {
+    const title = req.body.title;
+    activity.travels.findOne({title:title})
+    .then((travel) => {
+
+        travel.attendence += 1;
+        travel.save();
+        res.json(travel);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+})
+
+router.route('/withdraw').post((req, res) => {
+    const title = req.body.title;
+    activity.travels.findOne({title:title})
+    .then((travel) => {
+
+        travel.attendence -= 1;
+        travel.save();
+        res.json(travel);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+})
+
 module.exports = router;

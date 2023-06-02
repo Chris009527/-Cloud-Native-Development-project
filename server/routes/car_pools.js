@@ -43,4 +43,41 @@ router.route('/add').post((req, res) => {
     .catch(err => res.status(400).json('Error: '+err));
 });
 
+router.route('/check_participate').post((req, res) => {
+    const title = req.body.title;
+    activity.car_pools.findOne({title:title})
+    .then((car) => {
+        if (car.attendence < car.headcount)
+        {
+            res.json(car);
+        }
+        else res.status(400).json('Error: '+err);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+})
+
+router.route('/participate').post((req, res) => {
+    const title = req.body.title;
+    activity.car_pools.findOne({title:title})
+    .then((car) => {
+
+        car.attendence += 1;
+        car.save();
+        res.json(car);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+})
+
+router.route('/withdraw').post((req, res) => {
+    const title = req.body.title;
+    activity.car_pools.findOne({title:title})
+    .then((car) => {
+
+        car.attendence -= 1;
+        car.save();
+        res.json(car);
+    })
+    .catch(err => res.status(400).json('Error: '+err));
+})
+
 module.exports = router;

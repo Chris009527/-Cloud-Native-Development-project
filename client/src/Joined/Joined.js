@@ -27,7 +27,10 @@ const get_Joined_event = async (showall, userid) => {
                     tempList.push(res.data);
                                     
                 }
-
+                if(!showall)
+                {
+                    tempList.slice(0, showall);
+                }
                 return tempList;
             }catch(error)
             {

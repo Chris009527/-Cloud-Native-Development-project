@@ -34,7 +34,7 @@ function Create_activity(props) {
           to : Date(formData.to),
           headcount : Number(formData.headcount),
           introduction : formData.introduction,
-          attendence : 0
+          attendence : 1
         }
         console.log(data);
         axios.post('http://localhost:5001/'+formData.actType+'/add', data)

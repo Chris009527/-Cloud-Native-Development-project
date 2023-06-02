@@ -2,14 +2,16 @@ import React,{useState} from "react"
 import { Button, Modal, Container, Row, Col, ModalHeader, ModalTitle, ModalBody } from "react-bootstrap"
 import axios from 'axios'
 
-const join_activity = async (userid, acttitle) => {
+const join_activity = async (userid, activity, type) => {
     try
-    {
+    {   
         const participate = {
             userid : userid,
-            actname : acttitle
-        }
+            actname : activity.title
+        };
+        await axios.post("http://localhost:5001/"+type+"/check_participate", {title:activity.title});
         const response = await axios.post("http://localhost:5002/participate/update", participate);
+        await axios.post("http://localhost:5001/"+type+"/participate", {title:activity.title});
         console.log(response.data);
     }
     catch(error)
@@ -33,7 +35,7 @@ function Activity_Block(props){
     }
 
     const handleAdd = () => {       
-        join_activity(props.userid, props.info.title);
+        join_activity(props.userid, props.info, props.type);
         setShowModal(false);
     }
     return (
@@ -58,7 +60,7 @@ function Activity_Block(props){
                         <div>Duration: {props.info.from} ~ {props.info.to}</div>
                     </Col>
                     <Col className="d-flex justify-content-end">
-                        <div>Headcount: {props.info.headcount}</div>
+                        <div>Participate: {props.info.attendence}/{props.info.headcount}</div>
                     </Col>
                 </Row>
             </Container>
