@@ -33,8 +33,7 @@ function Nav_bar(props) {
             
                 <ul className="navbar-nav ms-auto text-capitalize ">
                     <li className="nav-item mx-3 "><d className="nav-item"><p  style={{color:'#CBE4F2', fontSize:'18px'}}>Hi, {username}</p></d></li>
-                    <li className="nav-item"><d className="nav-item"><a href="signin.html" className="nav-link" style={{color:'#CBE4F2', fontSize:'18px'}}>logout</a></d></li>
-    
+                    <li className="nav-item"><d className="nav-item"><a href="http://localhost:3000/" className="nav-link" style={{color:'#CBE4F2', fontSize:'18px'}}>logout</a></d></li>    
                 </ul>
             </div>
         </nav>
