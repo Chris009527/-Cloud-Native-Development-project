@@ -55,7 +55,7 @@ function Home() {
                                 <Create_activity userInfo = {userInfo}/>
                             </div>
  
-                            <Show_activity type="sports" userInfo = {userInfo}/>
+                            <Show_activity type="all" userInfo = {userInfo}/>
 
                         </div>
                     </div>

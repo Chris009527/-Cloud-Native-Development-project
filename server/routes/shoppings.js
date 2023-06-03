@@ -4,8 +4,8 @@ let activity = require('../models/activity.model');
 
 router.route('/').get((req, res) => {
     activity.shoppings.find()
-    .then((sport) => {
-        res.json(sport);
+    .then((shopping) => {
+        res.json(shopping);
     })
     .catch(err => res.status(400).json({error:'Error: '}));
 });
@@ -49,11 +49,19 @@ router.route('/check_participate').post((req, res) => {
     const title = req.body.title;
     activity.shoppings.findOne({title:title})
     .then((shopping) => {
-        if (shopping.attendence < shopping.headcount)
+        const from = new Date(shopping.from);
+        const to = new Date(shopping.to);
+        const now = new Date();
+
+        if (shopping.attendence > shopping.headcount )
         {
-            res.json(shopping);
+            res.status(400).json({error:'Error: exceed max headcount.'});
         }
-        else res.status(400).json({error:'Error: exceed max headcount.'});
+        else if(now < from || now > to)
+        {
+            res.status(400).json({error:'Error: Not in the time range.'});
+        }
+        else res.json(shopping);
     })
     .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 })

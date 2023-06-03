@@ -5,6 +5,19 @@ let activity = require('../models/activity.model');
 router.route('/').get((req, res) => {
     activity.car_pools.find()
     .then((car) => {
+        switch(req.query.filter)
+        {
+            case "popular":
+                car.sort((a, b) => b.attendence - a.attendence);
+                break;
+            case "startTime":
+                car.sort((a, b) => new Date(b.from) - new Date(a.from));
+                break;
+            case "recent":
+                car.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+            default :
+                ;
+        }
         res.json(car);
     })
     .catch(err => res.status(400).json({error:'Error: '}));
@@ -50,11 +63,19 @@ router.route('/check_participate').post((req, res) => {
     const title = req.body.title;
     activity.car_pools.findOne({title:title})
     .then((car) => {
-        if (car.attendence < car.headcount)
+        const from = new Date(car.from);
+        const to = new Date(car.to);
+        const now = new Date();
+
+        if (car.attendence >= car.headcount )
         {
-            res.json(car);
+            res.status(400).json({error:'Error: exceed max headcount.'});
         }
-        else res.status(400).json({error:'Error: exceed max headcount.'});
+        else if(now < from || now > to)
+        {
+            res.status(400).json({error:'Error: Not in the time range.'});
+        }
+        else res.json(car);
     })
     .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 })

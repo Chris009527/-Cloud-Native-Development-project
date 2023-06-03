@@ -75,7 +75,7 @@ function Create_activity(props) {
 
                 <Form.Label>Type</Form.Label>
                 <Form.Select name='actType' value={formData.actType} onChange={handleFormData}>
-                  <option selected value='travels' >Travel</option>
+                  <option se lected value='travels' >Travel</option>
                   <option value='sports'>Sports</option>
                   <option value='car_pools'>Car pool</option>
                   <option value='shoppings'>Shopping</option>

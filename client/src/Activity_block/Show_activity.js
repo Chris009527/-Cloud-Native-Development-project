@@ -18,10 +18,25 @@ import axios from 'axios';
 
 const get_act_info =  async (num, type, filter) =>{
     try {
-        const response =  await axios.get('http://localhost:5001/'+type+"/");
-        const data = response.data;
-        
-        return data.slice(0, num);
+        if(type === "all")
+        {
+
+            const l = ["travels", "sports", "car_pools", "shoppings"];
+            let data = [];
+            for(let i = 0; i < l.length; i++)
+            {
+                const response = await axios.get('http://localhost:5001/'+l[i]+"/")
+                data = [...data, ...response.data]
+                
+            }
+            return data.slice(0, num);
+        }
+        else
+        {
+            const response =  await axios.get('http://localhost:5001/'+type+"/");
+            const data = response.data;
+            return data.slice(0, num);
+        }
         
     }catch(error)
     {

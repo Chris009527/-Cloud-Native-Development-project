@@ -18,7 +18,7 @@ const withdraw_activity = async (userid, acttitle) => {
     }
     catch(error)
     {
-        alert(error);
+        alert(error.response.data.error);
     }
 }
 

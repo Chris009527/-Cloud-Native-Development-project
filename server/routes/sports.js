@@ -49,11 +49,19 @@ router.route('/check_participate').post((req, res) => {
     const title = req.body.title;
     activity.sports.findOne({title:title})
     .then((sport) => {
-        if (sport.attendence < sport.headcount)
+        const from = new Date(sport.from);
+        const to = new Date(sport.to);
+        const now = new Date();
+
+        if (sport.attendence >= sport.headcount )
         {
-            res.json(sport);
+            res.status(400).json({error:'Error: exceed max headcount.'});
         }
-        else res.status(400).json({error:'Error: exceed max headcount.'});
+        else if(now < from || now > to)
+        {
+            res.status(400).json({error:'Error: Not in the time range.'});
+        }
+        else res.json(sport);
     })
     .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 })
