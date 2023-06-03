@@ -80,7 +80,7 @@ router.route('/check_participate').post((req, res) => {
         {
             res.status(400).json({error:'Error: exceed max headcount.'});
         }
-        else if(now < from || now > to)
+        else if(now > to)
         {
             res.status(400).json({error:'Error: Not in the time range.'});
         }

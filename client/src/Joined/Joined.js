@@ -51,6 +51,8 @@ const get_Joined_event = async (showall, userid) => {
 }
 
 function Joined_event_block(props) {
+    
+    
     const [showmore, setshowmore] = useState(false);
     const [buttontext, setbuttontext] = useState('more...')
     const [list, setList] = useState([]);
@@ -62,19 +64,26 @@ function Joined_event_block(props) {
         else setbuttontext('more...');
     }
     useEffect(() => {
+        if(typeof(props.userInfo._id) === "undefined")
+        {
+            ;
+        }
+        else
+        {
+            get_Joined_event(showmore, props.userInfo._id)
+            .then(result => {
+                let newlist = [];
+                let i = 0;
+                while(i < result.length)
+                {
+                    newlist.push(<Joined_event info={result[i]} userid={props.userInfo._id}/>);
+                    i++;
+                }
+                setList(newlist);
 
-        get_Joined_event(showmore, props.userInfo._id)
-        .then(result => {
-            let newlist = [];
-            let i = 0;
-            while(i < result.length)
-            {
-                newlist.push(<Joined_event info={result[i]} userid={props.userInfo._id}/>);
-                i++;
-            }
-            setList(newlist);
-
-        })
+            })
+        }
+        
     }) 
 
     return (

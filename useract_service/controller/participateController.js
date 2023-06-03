@@ -23,7 +23,7 @@ exports.update = async (req, res) =>{
     {
         if(response.actname.find(e => e === actname))
         {
-            return res.status(400).json("Error: Has been participated.");
+            return res.status(400).json({error:"Error: Has been participated."});
         }
         response.actname.push(actname);
         Participate.findOneAndUpdate(
@@ -84,5 +84,15 @@ exports.findByUser = async(req, res) => {
     const userid = req.body.userid;
     Participate.findOne({userid: userid})
     .then(participate => res.json(participate.actname))
-    .catch(err => res.status(400).json('Error: ' + err));
+    .catch(err => {
+        const userid = req.body.userid;
+        const actname = [];
+
+        const newParticipate = new Participate({userid, actname});
+
+        newParticipate.save()
+            .then(() => res.status(400).json({error:'Warning: this user does not have a act_list. Create one.' + err}))
+            .catch(err => res.status(400).json({error: 'Error: ' + err}));
+        
+    });
 }

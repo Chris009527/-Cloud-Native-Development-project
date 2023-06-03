@@ -2,13 +2,14 @@ import React,{useState} from "react"
 import { Button, Modal, Container, Row, Col, ModalHeader, ModalTitle, ModalBody } from "react-bootstrap"
 import axios from 'axios'
 
-const join_activity = async (userid, activity, type) => {
+const join_activity = async (userid, activity) => {
     try
     {   
         const participate = {
             userid : userid,
             actname : activity.title
         };
+        const type = activity.title.substring(0, activity.title.indexOf(":"));
         await axios.post("http://localhost:5001/"+type+"/check_participate", {title:activity.title});
         const response = await axios.post("http://localhost:5002/participate/update", participate);
         await axios.post("http://localhost:5001/"+type+"/participate", {title:activity.title});
@@ -34,7 +35,7 @@ function Activity_Block(props){
     }
 
     const handleAdd = () => {       
-        join_activity(props.userid, props.info, props.type);
+        join_activity(props.userid, props.info);
         setShowModal(false);
     }
     const isClosedToDeadline = () => {
@@ -60,14 +61,14 @@ function Activity_Block(props){
                 </Col>
             </Row>
             <Row>
-                <Col xs={3}><h5>{props.info.hostname}</h5></Col>
+                <Col xs={3}><h5><strong>Hoster: </strong>{props.info.hostname}</h5></Col>
             </Row>
             <Row>
-                <Col xs={9}>
-                    <div>Duration: {props.info.from} ~ {props.info.to}</div>
-                </Col>
+                    <div><strong>Duration: </strong>{props.info.from} ~ {props.info.to}</div>
+            </Row>
+            <Row>
                 <Col className="d-flex justify-content-end">
-                    <div>Participate: {props.info.attendence}/{props.info.headcount}</div>
+                    <div><strong>Participate: </strong>{props.info.attendence}/{props.info.headcount}</div>
                 </Col>
             </Row>
             <hr className="my-4" style={{ borderTop: '1px solid #4F4F4F', borderBottom: '1px solid #4F4F4F' }} />
@@ -84,7 +85,7 @@ function Activity_Block(props){
                     <h4 className="text-center">Information</h4>
                     <Row className="my-2 mb-3 px-3">
                         <Col xs={9}><div><strong>Hoster:</strong> {props.info.hostname}</div></Col>
-                        <Col className="d-flex justify-content-end"><div><strong>Headcount:</strong> {props.info.headcount}</div></Col>
+                        <Col className="d-flex justify-content-end"><div><strong>Headcount:</strong> {props.info.attendence}/{props.info.headcount}</div></Col>
                     </Row>
                     <Row className="my-2 mb-3 px-3">
                         <Col xs={9}><div><strong>Duration:</strong> {props.info.from} ~ {props.info.to}</div></Col>
