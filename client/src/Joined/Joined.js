@@ -78,24 +78,17 @@ function Joined_event_block(props) {
     }) 
 
     return (
-        <div>
-            <div className="card shadow-sm mb-4" >
-                <div className="card-body">
-                    <div className="row no-gutters d-none d-lg-flex">
-                        <h6 className="card-title ">
-                            Joined activities, 
-                            <Button variant="link" onClick={handlemore}><small>{buttontext}</small> </Button> 
-                        </h6>
-
-                        <div>
-                            {list}
-                        </div>
-                    </div>
-                </div>
+        <div style={{ fontFamily: 'Arial',backgroundColor: '#f0f0f0',borderRadius: '5px',boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', transition: '0.3s', padding: '20px',marginBottom: '20px'
+        }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0' }}>
+                <h5 style={{marginBottom: '0', color: '#3097D1' ,fontSize:"20px"}}><strong>Joined Activities</strong></h5>
+                <Button variant="link" onClick={handlemore} style={{ color: '#3097D1' }}>{buttontext}</Button> 
             </div>
-
+            <div>
+                {list}
+            </div>
         </div>
-    )
+    )  
 }
 
 export default Joined_event_block;

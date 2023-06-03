@@ -26,8 +26,9 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
     const title = 'car_pools:'+req.body.title;
     const hostid = req.body.hostid;
-    const from = Date.parse(req.body.from);
-    const to = Date.parse(req.body.to);
+    const hostname = req.body.hostname;
+    const from = req.body.from;
+    const to = req.body.to;
     const headcount = Number(req.body.headcount);
     const introduction = req.body.introduction;
     const attendence = Number(req.body.attendence);
@@ -35,14 +36,22 @@ router.route('/add').post((req, res) => {
     const newcar = new activity.car_pools({
         title,
         hostid,
+        hostname,
         from,
         to,
         headcount,
         introduction,
         attendence
     });
-  
-    newcar.save()
+   if(headcount <= 0)
+   {
+        return res.status(400).json({error:"Error: headcount should be > 0"});
+   }
+   else if(new Date(from) >= new Date(to))
+   {
+        return res.status(400).json({error:"Error: fromTime should earlier than toTime"});
+   }
+   else newcar.save()
       .then(() => res.json('car added!'))
       .catch(err => res.status(400).json({error:
         'Error: Please make sure\n'+

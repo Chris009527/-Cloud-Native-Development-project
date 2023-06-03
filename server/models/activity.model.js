@@ -6,6 +6,7 @@ const activitySchema = new Schema(
     {
         title:{type: String, required: true, unique: true},
         hostid:{type: String, required: true},
+        hostname:{type: String, required: true},
         from:{type: Date, required: true},
         to:{type: Date, required: true},
         headcount:{type: Number, required: true},

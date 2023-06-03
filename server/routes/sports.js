@@ -5,6 +5,19 @@ let activity = require('../models/activity.model');
 router.route('/').get((req, res) => {
     activity.sports.find()
     .then((sport) => {
+        switch(req.query.filter)
+        {
+            case "popular":
+                sport.sort((a, b) => b.attendence - a.attendence);
+                break;
+            case "startTime":
+                sport.sort((a, b) => new Date(b.from) - new Date(a.from));
+                break;
+            case "recent":
+                sport.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+            default :
+                ;
+        }
         res.json(sport);
     })
     .catch(err => res.status(400).json({error:'Error: '}));
@@ -13,8 +26,9 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
     const title = 'sports:'+req.body.title;
     const hostid = req.body.hostid;
-    const from = Date.parse(req.body.from);
-    const to = Date.parse(req.body.to);
+    const hostname = req.body.hostname;
+    const from = req.body.from;
+    const to = req.body.to;
     const headcount = Number(req.body.headcount);
     const introduction = req.body.introduction;
     const attendence = Number(req.body.attendence);
@@ -22,6 +36,7 @@ router.route('/add').post((req, res) => {
     const newsport = new activity.sports({
         title,
         hostid,
+        hostname,
         from,
         to,
         headcount,
@@ -29,7 +44,15 @@ router.route('/add').post((req, res) => {
         attendence
     });
   
-    newsport.save()
+    if(headcount <= 0)
+   {
+        return res.status(400).json({error:"Error: headcount should be > 0"});
+   }
+   else if(new Date(from) >= new Date(to))
+   {
+        return res.status(400).json({error:"Error: fromTime should earlier than toTime"});
+   }
+    else newsport.save()
       .then(() => res.json('Sport added!'))
       .catch(err => res.status(400).json({error:
         'Error: Please make sure\n'+

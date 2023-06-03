@@ -25,7 +25,13 @@ const get_act_info =  async (num, type, filter) =>{
             let data = [];
             for(let i = 0; i < l.length; i++)
             {
-                const response = await axios.get('http://localhost:5001/'+l[i]+"/")
+                const response = await axios.get('http://localhost:5001/'+l[i]+"/", 
+                    {
+                        params:{
+                            filter : filter
+                        }
+                    }
+                )
                 data = [...data, ...response.data]
                 
             }
@@ -33,7 +39,13 @@ const get_act_info =  async (num, type, filter) =>{
         }
         else
         {
-            const response =  await axios.get('http://localhost:5001/'+type+"/");
+            const response = await axios.get('http://localhost:5001/'+type+"/", 
+                {
+                    params:{
+                        filter : filter
+                    }
+                }
+            )
             const data = response.data;
             return data.slice(0, num);
         }
@@ -73,20 +85,24 @@ function Show_activity(props){
     
     
     return (
-        <div>
-            <div className="card-header bg-transparent">
+        <div style={{ paddingLeft: '20px', paddingRight: '20px', fontFamily: 'Arial', backgroundColor: '#f0f0f0' }}>
+            <div className="card-header bg-transparent d-flex justify-content-end">
+                <br/><br/>
                 <DropdownButton id="dropdown-basic-button" title="Filter" onSelect={updatefilter}>
-                        <Dropdown.Item eventKey="Recent">Recent</Dropdown.Item>
-                        <Dropdown.Item eventKey="Popular">Popular</Dropdown.Item>
-                        <Dropdown.Item eventKey="Like">Like</Dropdown.Item>
+                        <Dropdown.Item eventKey="recent">Recent</Dropdown.Item>
+                        <Dropdown.Item eventKey="popular">Popular</Dropdown.Item>
+                        <Dropdown.Item eventKey="startTime">Start Time</Dropdown.Item>
+                        <Dropdown.Item eventKey="none">None</Dropdown.Item>
                 </DropdownButton>
             </div>
             {list}
-            <Button variant="Light" onClick={() =>{setNumToShow(numToShow+3)}}>
-                <text style={{'color':'#2184F6'}}>
-                    Show More...
-                </text>
-            </Button>
+            <div className="text-center mt-3">
+                <Button variant="Light" onClick={() =>{setNumToShow(numToShow+3)}}>
+                    <text style={{'color':'#2184F6'}}>
+                        Show More...
+                    </text>
+                </Button>
+            </div>
         </div>
     )
 }

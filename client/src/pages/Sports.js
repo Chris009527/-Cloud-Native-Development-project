@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Joined_event_block from '../Joined/Joined';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import User_info from '../user_info/user';
 const getUserInfo = async() => {
     
     const urlParams = new URLSearchParams(window.location.search);
@@ -43,12 +43,15 @@ function Sports() {
 
         <div className="container">
             <div className="row">
-                {/* <div className="col-12 col-lg-3">
-                    <div className="left-column">
+                <div className="col-12 col-lg-3" >
+                    <div className="card shadow-sm mb-4" >
+                        <div className="left-column">
+                            <User_info/>
+                        </div>
                     </div>
-                </div> */}
+                </div>
             
-                <div className="col-12 col-lg-8" >
+                <div className="col-12 col-lg-6" >
                     <div className="middle-column">
                         <div className="card" >
                             <div className="card-header bg-transparent">
@@ -65,7 +68,7 @@ function Sports() {
 
 
                     
-                <div className="col-12 col-lg-4">
+                <div className="col-12 col-lg-3">
                     <div className="right-column">
                         <Joined_event_block userInfo = {userInfo}/>
                         
