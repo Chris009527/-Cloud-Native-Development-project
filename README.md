@@ -9,5 +9,5 @@ $ cd -Cloud-Native-Development-project
 $ docker-compose up --build
 ```
 
-## Excute
+## Execute
 localhost:3000
