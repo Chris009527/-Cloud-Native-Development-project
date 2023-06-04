@@ -21,6 +21,7 @@ exports.update = async (req, res) =>{
 
     else
     {
+        console.log(response.actname);
         if(response.actname.find(e => e === actname))
         {
             return res.status(400).json({error:"Error: Has been participated."});

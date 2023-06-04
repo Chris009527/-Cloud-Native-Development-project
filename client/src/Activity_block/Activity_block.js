@@ -34,7 +34,7 @@ function Activity_Block(props){
         setShowModal(false);
     }
 
-    const handleAdd = () => {       
+    const handleAdd = () => {     
         join_activity(props.userid, props.info);
         setShowModal(false);
     }
@@ -50,6 +50,12 @@ function Activity_Block(props){
             return (<span style={{color : '#CE0000'}}>This activity is about to finish!</span>)
         }
     }
+
+    if(typeof(props.userid) === undefined)
+    {
+        ;
+    }
+
     return (
         <Container>
             <Row className="my-4">

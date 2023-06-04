@@ -113,4 +113,14 @@ router.route('/withdraw').post((req, res) => {
     .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 })
 
+router.route('/search').post((req, res) => {
+    const title = req.body.title;
+    activity.shoppings.findOne({title:title})
+    .then((shopping) => {
+        
+        res.json(shopping);
+    })
+    .catch(err => res.status(400).json({error:'Error: activity not found.'}));
+})
+
 module.exports = router;

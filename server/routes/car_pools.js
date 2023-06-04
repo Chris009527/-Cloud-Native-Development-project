@@ -113,4 +113,13 @@ router.route('/withdraw').post((req, res) => {
     .catch(err => res.status(400).json({error:'Error: activity not found.'}));
 })
 
+router.route('/search').post((req, res) => {
+    const title = req.body.title;
+    activity.car_pools.findOne({title:title})
+    .then((car) => {
+        res.json(car);
+    })
+    .catch(err => res.status(400).json({error:'Error: activity not found.'}));
+})
+
 module.exports = router;
