@@ -44,7 +44,6 @@ const get_act_info =  async (num, type, filter, onSearch, keyword) =>{
                 const response = await axios.post('http://localhost:5001/'+type+"/search", {title:type+':'+keyword});
                 if(!response.data)
                 {
-                    alert("Activity not found");
                     return [];
                 }
                 const data = response.data;
@@ -137,11 +136,19 @@ function Show_activity(props){
             .then(result => {
                 let newlist = [];
                 let i = 0;
-                while(i < result.length)
+                if(result.length <= 0)
                 {
-                    newlist.push(<Activity_Block info = {result[i]} userid = {props.userInfo._id} type={props.type}/>);
-                    i++;
+                    ;
                 }
+                else
+                {
+                    while(i < result.length)
+                    {
+                        newlist.push(<Activity_Block info = {result[i]} userid = {props.userInfo._id} type={props.type}/>);
+                        i++;
+                    }
+                }
+                
                 setList(newlist);
                 
             })

@@ -1,0 +1,99 @@
+version: '3'
+
+services:
+  login_server:
+    build:
+      context: ./Login/backend
+      dockerfile: Dockerfile
+    image: login_server
+    container_name: login_server
+    command: npm start
+    volumes:
+      - ./Login/backend/:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
+    ports:
+      - "5000:5000"
+    # depends_on:
+    #   - mongo
+    env_file: ./Login/backend/.env
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+
+  login_client:
+    build:
+      context: ./Login/frontend
+      dockerfile: Dockerfile
+    image: login_client
+    container_name: login_client
+    command: npm start
+    volumes:
+      - ./Login/frontend/:/usr/src/app
+      - node_modules:/usr/app/node_modules
+    depends_on:
+      - login_server
+
+    ports:
+      - "3000:3000"
+      
+    networks:
+      - app-network
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    image: server
+    container_name: server
+    command: npm start
+    volumes:
+      - ./server/:/usr/src/app
+      - node_modules:/usr/app/node_modules
+    ports:
+      - "5001:5001"
+    networks:
+      - app-network
+
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: client
+    container_name: client
+    command: npm start
+    volumes:
+      - ./client/:/usr/src/app
+      - node_modules:/usr/app/node_modules
+    depends_on:
+      - server
+      - useract_server
+      - login_server
+    ports:
+      - "3456:3000"
+    networks:
+      - app-network
+
+  useract_server:
+    build:
+      context: ./useract_service
+      dockerfile: Dockerfile
+    image: useract_server
+    container_name: useract_server
+    command: npm start
+    volumes:
+      - ./useract_service/:/usr/src/app
+      - node_modules:/usr/app/node_modules
+    depends_on:
+      - server
+    ports:
+      - "5002:5002"
+    networks:
+      - app-network
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    node_modules:
