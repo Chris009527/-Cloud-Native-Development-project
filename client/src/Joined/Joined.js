@@ -76,7 +76,7 @@ function Joined_event_block(props) {
                 let i = 0;
                 while(i < result.length)
                 {
-                    newlist.push(<Joined_event info={result[i]} userid={props.userInfo._id}/>);
+                    newlist.push(<Joined_event info={result[i]} user={props.userInfo}/>);
                     i++;
                 }
                 setList(newlist);

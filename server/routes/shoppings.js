@@ -32,6 +32,7 @@ router.route('/add').post((req, res) => {
     const headcount = Number(req.body.headcount);
     const introduction = req.body.introduction;
     const attendence = Number(req.body.attendence);
+    const member = req.body.member;
 
     const newshopping = new activity.shoppings({
         title,
@@ -41,7 +42,8 @@ router.route('/add').post((req, res) => {
         to,
         headcount,
         introduction,
-        attendence
+        attendence, 
+        member
     });
   
     if(headcount <= 0)
@@ -91,9 +93,13 @@ router.route('/check_participate').post((req, res) => {
 
 router.route('/participate').post((req, res) => {
     const title = req.body.title;
+    const member = {
+        name : req.body.name,
+        email : req.body.email
+    }
     activity.shoppings.findOne({title:title})
     .then((shopping) => {
-
+        shopping.member.push(member);
         shopping.attendence += 1;
         shopping.save();
         res.json(shopping);
@@ -103,9 +109,10 @@ router.route('/participate').post((req, res) => {
 
 router.route('/withdraw').post((req, res) => {
     const title = req.body.title;
+    const username = req.body.username;
     activity.shoppings.findOne({title:title})
     .then((shopping) => {
-
+        shopping.member.splice(shopping.member.findIndex(o => o.name === username), 1);
         shopping.attendence -= 1;
         shopping.save();
         res.json(shopping);

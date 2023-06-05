@@ -2,17 +2,22 @@ import React,{useState} from "react"
 import { Button, Modal, Container, Row, Col, ModalHeader, ModalTitle, ModalBody } from "react-bootstrap"
 import axios from 'axios'
 
-const join_activity = async (userid, activity) => {
+const join_activity = async (user, activity) => {
     try
     {   
         const participate = {
-            userid : userid,
+            userid : user._id,
             actname : activity.title
         };
+        const member = {
+            title : activity.title,
+            name:user.username,
+            email:user.email
+        }
         const type = activity.title.substring(0, activity.title.indexOf(":"));
         await axios.post("http://localhost:5001/"+type+"/check_participate", {title:activity.title});
         const response = await axios.post("http://localhost:5002/participate/update", participate);
-        await axios.post("http://localhost:5001/"+type+"/participate", {title:activity.title});
+        await axios.post("http://localhost:5001/"+type+"/participate", member);
     }
     catch(error)
     {
@@ -35,7 +40,7 @@ function Activity_Block(props){
     }
 
     const handleAdd = () => {     
-        join_activity(props.userid, props.info);
+        join_activity(props.user, props.info);
         setShowModal(false);
     }
     const isClosedToDeadline = () => {
@@ -51,7 +56,20 @@ function Activity_Block(props){
         }
     }
 
-    if(typeof(props.userid) === undefined)
+    const showMember = () => {
+        let showList = [];
+        for(let i = 0; i < props.info.member.length; i++)
+        {
+            showList.push(
+                <Row>
+                    <strong>{props.info.member[i].name}</strong><text>  {props.info.member[i].email}</text>
+                </Row>
+            )
+        }
+        return showList;
+    }
+
+    if(typeof(props.user._id) === undefined)
     {
         ;
     }
@@ -101,8 +119,15 @@ function Activity_Block(props){
                         <h4 className="text-center mb-3 px-3">Introduction</h4>
                         <Col xs={9}><p>{props.info.introduction}</p></Col>
                     </Row>
+                    <hr />
+                    <Row className="my-2 mb-3 px-3">
+                        <h4 className="text-center mb-3 px-3">Members</h4>
+                        {showMember()}
+                    </Row>
+                    
                    
                 </ModalBody>
+
                 <Modal.Footer className="modal-header-color">
                         {isClosedToDeadline()}
                         <Button variant="secondary" onClick={handleClose}>Cancel</Button>

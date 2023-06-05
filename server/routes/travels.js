@@ -32,6 +32,7 @@ router.route('/add').post((req, res) => {
     const headcount = Number(req.body.headcount);
     const introduction = req.body.introduction;
     const attendence = Number(req.body.attendence);
+    const member = req.body.member;
 
     const newtravel = new activity.travels({
         title,
@@ -41,7 +42,8 @@ router.route('/add').post((req, res) => {
         to,
         headcount,
         introduction,
-        attendence
+        attendence,
+        member
     });
   
     if(headcount <= 0)
@@ -91,9 +93,13 @@ router.route('/check_participate').post((req, res) => {
 
 router.route('/participate').post((req, res) => {
     const title = req.body.title;
+    const member = {
+        name : req.body.name,
+        email : req.body.email
+    }
     activity.travels.findOne({title:title})
     .then((travel) => {
-
+        travel.member.push(member);
         travel.attendence += 1;
         travel.save();
         res.json(travel);
@@ -103,9 +109,10 @@ router.route('/participate').post((req, res) => {
 
 router.route('/withdraw').post((req, res) => {
     const title = req.body.title;
+    const username = req.body.username;
     activity.travels.findOne({title:title})
     .then((travel) => {
-
+        travel.member.splice(travel.member.findIndex(o => o.name === username), 1);
         travel.attendence -= 1;
         travel.save();
         res.json(travel);

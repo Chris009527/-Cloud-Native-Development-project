@@ -144,7 +144,7 @@ function Show_activity(props){
                 {
                     while(i < result.length)
                     {
-                        newlist.push(<Activity_Block info = {result[i]} userid = {props.userInfo._id} type={props.type}/>);
+                        newlist.push(<Activity_Block info = {result[i]} user = {props.userInfo} type={props.type}/>);
                         i++;
                     }
                 }
