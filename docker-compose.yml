@@ -1,6 +1,16 @@
 version: '3'
 
 services:
+  mongo: 
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    networks:
+      - app-network
+    volumes:
+      - mongo-data:/data/db
+
   login_server:
     build:
       context: ./Login/backend
@@ -13,8 +23,8 @@ services:
       - node_modules:/usr/src/app/node_modules
     ports:
       - "5000:5000"
-    # depends_on:
-    #   - mongo
+    depends_on:
+      - mongo
     env_file: ./Login/backend/.env
     environment:
       - NODE_ENV=development
@@ -47,6 +57,8 @@ services:
     image: server
     container_name: server
     command: npm start
+    depends_on:
+      - mongo
     volumes:
       - ./server/:/usr/src/app
       - node_modules:/usr/app/node_modules
@@ -97,3 +109,5 @@ networks:
 
 volumes:
     node_modules:
+    mongo-data:
+      driver: local

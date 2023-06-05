@@ -11,7 +11,8 @@ const activitySchema = new Schema(
         to:{type: Date, required: true},
         headcount:{type: Number, required: true},
         introduction:{type: String},
-        attendence:{type: Number, required: true}
+        attendence:{type: Number, required: true},
+        member:[{name:String, email:String}],
     }, {
         timestamps: true,
       }

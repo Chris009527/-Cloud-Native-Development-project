@@ -32,6 +32,7 @@ router.route('/add').post((req, res) => {
     const headcount = Number(req.body.headcount);
     const introduction = req.body.introduction;
     const attendence = Number(req.body.attendence);
+    const member = req.body.member;
 
     const newsport = new activity.sports({
         title,
@@ -41,7 +42,8 @@ router.route('/add').post((req, res) => {
         to,
         headcount,
         introduction,
-        attendence
+        attendence,
+        member
     });
   
     if(headcount <= 0)
@@ -91,9 +93,13 @@ router.route('/check_participate').post((req, res) => {
 
 router.route('/participate').post((req, res) => {
     const title = req.body.title;
+    const member = {
+        name : req.body.name,
+        email : req.body.email
+    }
     activity.sports.findOne({title:title})
     .then((sport) => {
-
+        sport.member.push(member);
         sport.attendence += 1;
         sport.save();
         res.json(sport);
@@ -103,9 +109,10 @@ router.route('/participate').post((req, res) => {
 
 router.route('/withdraw').post((req, res) => {
     const title = req.body.title;
+    const username = req.body.username;
     activity.sports.findOne({title:title})
     .then((sport) => {
-
+        sport.member.splice(sport.member.findIndex(o => o.name === username), 1);
         sport.attendence -= 1;
         sport.save();
         res.json(sport);

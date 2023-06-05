@@ -17,7 +17,7 @@ function Create_activity(props) {
         to:'',
         actType:'travels',
         headcount : 0,
-        introduction:''
+        introduction:'',
       }
     )
     
@@ -35,7 +35,11 @@ function Create_activity(props) {
           to : formData.to,
           headcount : Number(formData.headcount),
           introduction : formData.introduction,
-          attendence : 1
+          attendence : 1,
+          member:[{
+            name:props.userInfo.username,
+            email:props.userInfo.email
+          }]
         }
         console.log(data);
         axios.post('http://localhost:5001/'+formData.actType+'/add', data)

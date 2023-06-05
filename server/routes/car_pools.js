@@ -32,6 +32,7 @@ router.route('/add').post((req, res) => {
     const headcount = Number(req.body.headcount);
     const introduction = req.body.introduction;
     const attendence = Number(req.body.attendence);
+    const member = req.body.member;
 
     const newcar = new activity.car_pools({
         title,
@@ -41,7 +42,8 @@ router.route('/add').post((req, res) => {
         to,
         headcount,
         introduction,
-        attendence
+        attendence,
+        member
     });
    if(headcount <= 0)
    {
@@ -91,9 +93,13 @@ router.route('/check_participate').post((req, res) => {
 
 router.route('/participate').post((req, res) => {
     const title = req.body.title;
+    const member = {
+        name : req.body.name,
+        email : req.body.email
+    }
     activity.car_pools.findOne({title:title})
     .then((car) => {
-
+        car.member.push(member);
         car.attendence += 1;
         car.save();
         res.json(car);
@@ -103,14 +109,16 @@ router.route('/participate').post((req, res) => {
 
 router.route('/withdraw').post((req, res) => {
     const title = req.body.title;
+    const username = req.body.username;
     activity.car_pools.findOne({title:title})
     .then((car) => {
-
+        car.member.splice(car.member.findIndex(o => o.name === username), 1);
+        //car.member = [];
         car.attendence -= 1;
         car.save();
         res.json(car);
     })
-    .catch(err => res.status(400).json({error:'Error: activity not found.'}));
+    .catch(err => res.status(400).json({error:'Error: activity not found.'+err}));
 })
 
 router.route('/search').post((req, res) => {

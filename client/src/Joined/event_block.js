@@ -2,18 +2,18 @@ import React, {useState} from "react";
 import { Button, Modal, Row, Col, ModalHeader, ModalTitle, ModalBody } from "react-bootstrap";
 import axios from 'axios'
 
-const withdraw_activity = async (userid, acttitle) => {
+const withdraw_activity = async (user, acttitle) => {
     try
     {
         const participate = {
-            userid : userid,
+            userid : user._id,
             actname : acttitle
         }
 
         const type = acttitle.substring(0, acttitle.indexOf(":"));
 
         const response = await axios.post("http://localhost:5002/participate/withdraw", participate);
-        await axios.post("http://localhost:5001/"+type+"/withdraw", {title:acttitle});
+        await axios.post("http://localhost:5001/"+type+"/withdraw", {title:acttitle, username:user.username});
         console.log(response.data);
     }
     catch(error)
@@ -38,8 +38,21 @@ function Joined_event(props)
 
     const handlewithdraw = () => {
         //將個資傳到後端取消活動
-        withdraw_activity(props.userid, props.info.title);
+        withdraw_activity(props.user, props.info.title);
         setShowModal(false);
+    }
+
+    const showMember = () => {
+        let showList = [];
+        for(let i = 0; i < props.info.member.length; i++)
+        {
+            showList.push(
+                <Row>
+                    <strong>{props.info.member[i].name}</strong><text>  {props.info.member[i].email}</text>
+                </Row>
+            )
+        }
+        return showList;
     }
 
     const isClosedToDeadline = () => {
@@ -92,9 +105,9 @@ function Joined_event(props)
                         <Col><p>{props.info.introduction}</p></Col>
                     </Row>
                     <hr />
-                    <h5 className="text-center mb-3">Comments</h5>
-                    <Row className="px-3">
-                        <Col><p>{props.info.comments}</p></Col>
+                    <Row className="my-2 mb-3 px-3">
+                        <h4 className="text-center mb-3 px-3">Members</h4>
+                        {showMember()}
                     </Row>
                 </ModalBody>
                 
